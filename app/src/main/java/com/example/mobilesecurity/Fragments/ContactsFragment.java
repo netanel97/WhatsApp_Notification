@@ -60,7 +60,14 @@ public class ContactsFragment extends Fragment {
             startActivity(new Intent(
                     "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         }
-        this.arrayListMessages = new HashMap<>();
+        String js = MSPV3.getMe().getString("MY_DB", "");
+        myDB = new Gson().fromJson(js, MyDB.class);
+        if (myDB == null) {
+            myDB = new MyDB();
+            this.arrayListMessages = new HashMap<>();
+        }
+
+
         contactRV = binding.listMessages;
         mAdapter = new SendersRycyclerViewAdapter(getContext());
         ArrayList<String> keys = new ArrayList<String>(arrayListMessages.keySet());
