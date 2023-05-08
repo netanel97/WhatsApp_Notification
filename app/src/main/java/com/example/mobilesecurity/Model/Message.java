@@ -35,4 +35,13 @@ public class Message {
     public void setTime(String time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "contact_name='" + contact_name + '\'' +
+                ", message='" + message + '\'' +
+                ", time='" + time + '\'' +
+                '}';
+    }
 }

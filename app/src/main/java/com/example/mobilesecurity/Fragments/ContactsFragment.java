@@ -56,7 +56,6 @@ public class ContactsFragment extends Fragment {
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(myBRD, new IntentFilter(NotificationListener.RADIO_STAION));
 
         } else {
-            //service is not enabled try to enabled by calling...
             startActivity(new Intent(
                     "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         }
@@ -64,9 +63,9 @@ public class ContactsFragment extends Fragment {
         myDB = new Gson().fromJson(js, MyDB.class);
         if (myDB == null) {
             myDB = new MyDB();
-            this.arrayListMessages = new HashMap<>();
         }
 
+        this.arrayListMessages = myDB.getMessages();
 
         contactRV = binding.listMessages;
         mAdapter = new SendersRycyclerViewAdapter(getContext());
@@ -114,8 +113,9 @@ public class ContactsFragment extends Fragment {
             if (!message.contains("messages from")) {
                 Message myMessage = new Message(sender, message, time);
                 if(arrayListMessages.get(sender) == null){
-                    arrayListMessages.put(sender,new ArrayList<Message>());
+                    arrayListMessages.put(sender,new ArrayList<>());
                 }
+                Log.d("this is mess", ""+myMessage);
                 arrayListMessages.get(sender).add(myMessage);
                 saveToSP(myMessage);
                 ArrayList<String> keys = new ArrayList<String>(arrayListMessages.keySet());
