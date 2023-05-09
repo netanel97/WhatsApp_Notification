@@ -77,7 +77,7 @@ public class NotificationListener extends NotificationListenerService {
         String[] arr =id.split("\\|");
         Log.d("reason", "onNotificationRemoved:" + reason);
         //!message.contains("messages from") && !message.contains("new messages") && !arr[3].equals("null") &&
-        if(reason == 8){
+        if(reason == 8 ){
             Log.i(TAG1, "Deleted From: " + from);
             Log.i(TAG1, "Deleted Message: " + message);
             Log.i(TAG1, "Notification ID" + id);

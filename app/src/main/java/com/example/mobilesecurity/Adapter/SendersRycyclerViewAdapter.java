@@ -13,12 +13,12 @@ import com.example.mobilesecurity.R;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SendersRycyclerViewAdapter  extends RecyclerView.Adapter<SendersRycyclerViewAdapter.SenderViewHolder> {
 
     private Context context;
     private ArrayList<String> senders;
-
     private ItemClickListener listener;
 
 
@@ -40,7 +40,7 @@ public class SendersRycyclerViewAdapter  extends RecyclerView.Adapter<SendersRyc
     @NonNull
     @Override
     public SendersRycyclerViewAdapter.SenderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sender_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_user, parent, false);
         SenderViewHolder senderViewHolder = new SenderViewHolder(view);
         return senderViewHolder;
     }

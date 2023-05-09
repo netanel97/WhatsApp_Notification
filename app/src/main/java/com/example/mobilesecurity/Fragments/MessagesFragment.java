@@ -1,24 +1,17 @@
 package com.example.mobilesecurity.Fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.Settings;
 
 import com.example.mobilesecurity.Model.Message;
 import com.example.mobilesecurity.Model.MyDB;
-import com.example.mobilesecurity.Services.NotificationListener;
 import com.example.mobilesecurity.Utils.Constants;
 import com.example.mobilesecurity.Utils.MSPV3;
 import com.example.mobilesecurity.Adapter.MessageRycyclerViewAdapter;
@@ -26,7 +19,6 @@ import com.example.mobilesecurity.databinding.FragmentMessagesBinding;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MessagesFragment extends Fragment {
     private FragmentMessagesBinding binding;

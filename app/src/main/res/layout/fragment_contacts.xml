@@ -3,10 +3,13 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:background="@drawable/w2"
     >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listMessages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/sender_item"/>
+        tools:listitem="@layout/show_user"/>
+
+
 </RelativeLayout>
