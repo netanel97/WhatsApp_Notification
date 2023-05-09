@@ -41,9 +41,6 @@ public class ContactsFragment extends Fragment {
     private String time;
 
     private SendersRycyclerViewAdapter mAdapter;
-
-
-
     private HashMap<String, ArrayList<Message>> arrayListMessages;
 
 
@@ -57,7 +54,7 @@ public class ContactsFragment extends Fragment {
         {
             //service is enabled do something
             IntentFilter intentFilter = new IntentFilter(NotificationListener.NOTIFICATION_SERVICE);
-            LocalBroadcastManager.getInstance(getContext()).registerReceiver(myBRD, new IntentFilter(NotificationListener.RADIO_STAION));
+            LocalBroadcastManager.getInstance(getContext()).registerReceiver(myBRD, new IntentFilter(NotificationListener.WHATSAPP_MESSAGE));
 
         } else {
             startActivity(new Intent(
