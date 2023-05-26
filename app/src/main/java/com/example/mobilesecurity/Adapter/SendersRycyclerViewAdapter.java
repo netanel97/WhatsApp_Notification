@@ -68,9 +68,11 @@ public class SendersRycyclerViewAdapter  extends RecyclerView.Adapter<SendersRyc
     class SenderViewHolder extends RecyclerView.ViewHolder{
 
         private MaterialTextView fragment_message_contact_name;
+        private MaterialTextView fragment_message_lastMessage;
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
             this.fragment_message_contact_name = itemView.findViewById(R.id.fragment_message_contact_name);
+            this.fragment_message_lastMessage = itemView.findViewById(R.id.fragment_message_lastMessage);
             itemView.setOnClickListener(view ->
             {
                 int position = getAdapterPosition();

@@ -2,15 +2,13 @@ package com.example.mobilesecurity.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobilesecurity.Model.Message;
-import com.example.mobilesecurity.R;
-import com.google.android.material.textview.MaterialTextView;
+import com.example.mobilesecurity.databinding.MessageItemBinding;
 
 import java.util.ArrayList;
 
@@ -26,18 +24,24 @@ public class MessageRycyclerViewAdapter extends RecyclerView.Adapter<MessageRycy
 
     @NonNull
     @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
-        MessageViewHolder messageViewHolder = new MessageViewHolder(view);
-        return messageViewHolder;
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+      //  View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
+//        MessageViewHolder messageViewHolder = new MessageViewHolder(view);
+      //  return messageViewHolder;
+        return new MessageViewHolder(MessageItemBinding.inflate(LayoutInflater.from(parent.getContext())
+                ,parent,
+                false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message item = getItem(position);
-        holder.fragment_message_contact_name.setText(item.getContact_name());
-        holder.fragment_message.setText(item.getMessage());
-        holder.fragment_message_time.setText(item.getTime());
+        holder.binding.receivedMessage.setText(item.getMessage());
+        holder.binding.receivedName.setText(item.getContact_name());
+        holder.binding.receivedDateTime.setText(item.getTime());
+//        holder.fragment_message_contact_name.setText(item.getContact_name());
+//        holder.fragment_message.setText(item.getMessage());
+//        holder.fragment_message_time.setText(item.getTime());
     }
 
     @Override
@@ -53,19 +57,14 @@ public class MessageRycyclerViewAdapter extends RecyclerView.Adapter<MessageRycy
         return messages.get(position);
     }
 
-    class MessageViewHolder extends RecyclerView.ViewHolder{
+    public class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        private MaterialTextView fragment_message_contact_name;
-        private MaterialTextView fragment_message;
-        private MaterialTextView fragment_message_time;
+        private final MessageItemBinding binding;
 
 
-
-        public MessageViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.fragment_message_contact_name = itemView.findViewById(R.id.fragment_message_contact_name);
-            this.fragment_message = itemView.findViewById(R.id.fragment_message);
-            this.fragment_message_time = itemView.findViewById(R.id.fragment_message_time);
+        public MessageViewHolder(MessageItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

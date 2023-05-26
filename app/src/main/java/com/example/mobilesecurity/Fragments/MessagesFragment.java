@@ -36,14 +36,12 @@ public class MessagesFragment extends Fragment {
         binding = FragmentMessagesBinding.inflate(inflater, container, false);
         messagesRV = binding.listMessages;
         mAdapter = new MessageRycyclerViewAdapter(getContext());
-
-        String key = getArguments().getString("SENDER");
+        String key = getArguments().getString(Constants.KEY_SENDER);
         String js = MSPV3.getMe().getString(Constants.KEY_DB, "");
         myDB = new Gson().fromJson(js, MyDB.class);
         if(myDB == null){
             myDB = new MyDB();
         }
-        Log.d("bdika2", "onCreateView: " + key);
         mAdapter.updateMessage(myDB.getMessages().get(key));//update MessageRycycler
         LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -51,49 +49,13 @@ public class MessagesFragment extends Fragment {
         messagesRV.setAdapter(mAdapter);
         return binding.getRoot();
     }
-
-//    private BroadcastReceiver myBRD = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//
-//
-//            String sender = intent.getStringExtra("sender");
-//            String message = intent.getStringExtra("message");
-//            String time = intent.getStringExtra("time");
-//
-//            if(!message.contains("messages from")){
-//
-//
-//                Message myMessage = new Message(sender, message, time);
-////                arrayListMessages.get(sender).add(myMessage);
-//                saveToSP(myMessage);
-//              //  listsArrayList.sort(Comparator.comparing(Message::getContact_name));
-//                mAdapter.notifyItemInserted(listsArrayList.size());
-//            }
-//
-//        }
-//    };
-
-//    private void saveToSP(Message message) {
-//        String js = MSPV3.getMe().getString("MY_DB", "");
-//        myDB = new Gson().fromJson(js, MyDB.class);
-//        if(myDB == null){
-//            myDB = new MyDB();
-//        }
-//        myDB.getMessages().add(message);
-//
-////        Collections.sort(myDB.getRecords(), new SortByScore());
-//
-//        String json = new Gson().toJson(myDB);
-//        MSPV3.getMe().putString("MY_DB", json);
-//    }
-
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
+
+
 
 }

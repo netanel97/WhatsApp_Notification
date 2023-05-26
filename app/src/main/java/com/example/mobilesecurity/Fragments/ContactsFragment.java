@@ -24,6 +24,7 @@ import com.example.mobilesecurity.Model.Message;
 import com.example.mobilesecurity.Model.MyDB;
 import com.example.mobilesecurity.R;
 import com.example.mobilesecurity.Services.NotificationListener;
+import com.example.mobilesecurity.Utils.Constants;
 import com.example.mobilesecurity.Utils.MSPV3;
 import com.example.mobilesecurity.databinding.FragmentContactsBinding;
 import com.google.gson.Gson;
@@ -44,14 +45,12 @@ public class ContactsFragment extends Fragment {
     private HashMap<String, ArrayList<Message>> arrayListMessages;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentContactsBinding.inflate(inflater, container, false);
 
-        if (Settings.Secure.getString(getContext().getContentResolver(),"enabled_notification_listeners").contains(getContext().getApplicationContext().getPackageName()))
-        {
+        if (Settings.Secure.getString(getContext().getContentResolver(), "enabled_notification_listeners").contains(getContext().getApplicationContext().getPackageName())) {
             //service is enabled do something
             IntentFilter intentFilter = new IntentFilter(NotificationListener.NOTIFICATION_SERVICE);
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(myBRD, new IntentFilter(NotificationListener.WHATSAPP_MESSAGE));
@@ -70,23 +69,27 @@ public class ContactsFragment extends Fragment {
 
         contactRV = binding.listMessages;
         mAdapter = new SendersRycyclerViewAdapter(getContext());
-        ArrayList<String> keys = new ArrayList<String>(arrayListMessages.keySet());
+        ArrayList<String> keys = new ArrayList<>(arrayListMessages.keySet());
+
         mAdapter.updateSendersList(keys);
-        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         contactRV.setLayoutManager(linearLayoutManager);
         contactRV.setAdapter(mAdapter);
-        mAdapter.setItemSenderClickListener(new SendersRycyclerViewAdapter.ItemClickListener(){
+        Intent intent = new Intent(getContext(), NotificationListener.class);
+        getActivity().startService(intent);
+        mAdapter.setItemSenderClickListener(new SendersRycyclerViewAdapter.ItemClickListener() {
             @Override
             public void changeScreenItem(String sender) {
                 Bundle args = new Bundle();
-                args.putString("SENDER",sender);
+                args.putString(Constants.KEY_SENDER, sender);
                 LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myBRD);
                 final NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                navController.navigate(R.id.nav_MessagesFragment,args);//moving to..
+                navController.navigate(R.id.nav_MessagesFragment, args);//moving to..
 
 
-            }});
+            }
+        });
 
 
         return binding.getRoot();
@@ -98,42 +101,24 @@ public class ContactsFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-          sender = intent.getStringExtra("sender");
-          message = intent.getStringExtra("message");
-          time = intent.getStringExtra("time");
-            if (!message.contains("messages from")) {
-                Message myMessage = new Message(sender, message, time);
-                if(arrayListMessages.get(sender) == null){
-                    arrayListMessages.put(sender,new ArrayList<>());
-                }
+            getActivity().runOnUiThread(() -> {
 
-                Log.d("this is mess", ""+myMessage);
+                sender = intent.getStringExtra(Constants.sender);
+                message = intent.getStringExtra(Constants.KEY_message);
+                time = intent.getStringExtra(Constants.KEY_time);
+                Message myMessage = new Message(sender, message, time);
+                if (arrayListMessages.get(sender) == null) {
+                    arrayListMessages.put(sender, new ArrayList<>());
+                }
                 arrayListMessages.get(sender).add(myMessage);
-                saveToSP(myMessage);
-                ArrayList<String> keys = new ArrayList<String>(arrayListMessages.keySet());
+                ArrayList<String> keys = new ArrayList<>(arrayListMessages.keySet());
                 mAdapter.updateSendersList(keys);
-            }
+
+
+            });
         }
 
     };
-
-
-    private void saveToSP(Message message) {
-        Log.d("message", "saveToSP: "+message);
-        String js = MSPV3.getMe().getString("MY_DB", "");
-        myDB = new Gson().fromJson(js, MyDB.class);
-        if (myDB == null) {
-            myDB = new MyDB();
-        }
-        if(myDB.getMessages().get(sender) == null){
-            myDB.getMessages().put(sender,new ArrayList<Message>());
-
-        }
-        myDB.getMessages().get(message.getContact_name()).add(message);
-        String json = new Gson().toJson(myDB);
-        MSPV3.getMe().putString("MY_DB", json);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

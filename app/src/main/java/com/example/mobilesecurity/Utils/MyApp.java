@@ -2,7 +2,7 @@ package com.example.mobilesecurity.Utils;
 
 import android.app.Application;
 
-public class myApp extends Application {
+public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
