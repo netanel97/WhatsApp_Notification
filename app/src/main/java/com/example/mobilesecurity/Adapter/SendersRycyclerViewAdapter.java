@@ -1,6 +1,7 @@
 package com.example.mobilesecurity.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class SendersRycyclerViewAdapter  extends RecyclerView.Adapter<SendersRyc
     }
     public void updateSendersList(final ArrayList<String> senders){
         this.senders = senders;
+        Log.d("UpdateList",""+ senders.toString());
         notifyDataSetChanged();
     }
 

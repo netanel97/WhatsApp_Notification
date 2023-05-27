@@ -74,8 +74,7 @@ public class NotificationListener extends NotificationListenerService {
         String id = sbn.getKey();
         Log.d("reason", "" + reason);
         Log.d("message", "" + message);
-//        String[] arr = id.split("\\|");
-        if (reason == 8 && !from.contains("WhatApp") && !message.contains("new messages")) {
+        if (reason == 8 && !from.contains("WhatApp") && !message.contains("new messages") && !message.contains("Calling")) {
             Log.i(TAG1, "Deleted From: " + from);
             Log.i(TAG1, "Deleted Message: " + message);
             Log.i(TAG1, "Notification ID" + id);

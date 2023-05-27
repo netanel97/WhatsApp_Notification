@@ -4,6 +4,7 @@ import android.Manifest;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import com.example.mobilesecurity.R;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,6 +32,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         doNotKillService();
 //        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 104);//request for notification
+
+
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -88,4 +94,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void showExplanationDialog(){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Notification Access Required")
+                .setMessage("This app needs access to your notifications to function correctly. Click 'Proceed' to go to the settings screen where you can grant this permission.")
+                .setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // proceed with opening the settings
+                        Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isNotificationServiceEnabled()) {
+            showExplanationDialog();
+        }
+    }
+
+    private boolean isNotificationServiceEnabled() {
+        Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(this);
+        return packageNames.contains(getPackageName());
+    }
+
+
 }
+
