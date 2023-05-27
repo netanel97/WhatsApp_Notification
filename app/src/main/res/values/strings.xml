@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MobileSecurity</string>
+    <string name="app_name">Whatsapp logger</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="contact_fragment_label">contact_fragment_label</string>
