@@ -60,6 +60,7 @@ public class NotificationListener extends NotificationListenerService {
         Log.i(TAG, "Notification Listener Disconnected");
     }
 
+
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn, RankingMap rankingMap, int reason) {
         if (!sbn.getPackageName().equals(WA_PACKAGE)) return;

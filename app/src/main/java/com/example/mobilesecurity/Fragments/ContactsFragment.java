@@ -1,18 +1,20 @@
 package com.example.mobilesecurity.Fragments;
 
 
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -37,8 +39,6 @@ import java.util.HashMap;
 public class ContactsFragment extends Fragment {
     private FragmentContactsBinding binding;
 
-    private MessagesViewModel messagesViewModel;
-
     private MyDB myDB;
     private RecyclerView contactRV;
     private SendersRycyclerViewAdapter mAdapter;
@@ -46,27 +46,29 @@ public class ContactsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentContactsBinding.inflate(inflater, container, false);
-        messagesViewModel = new MessagesViewModel();
-        messagesViewModel.getAllMessages().observe(getViewLifecycleOwner(),observer);
 
         if (Settings.Secure.getString(getContext().getContentResolver(), "enabled_notification_listeners").contains(getContext().getApplicationContext().getPackageName())) {
             //service is enabled do something
             IntentFilter intentFilter = new IntentFilter(NotificationListener.NOTIFICATION_SERVICE);
-            LocalBroadcastManager.getInstance(getContext()).registerReceiver(messagesViewModel.getReciver(), new IntentFilter(NotificationListener.WHATSAPP_MESSAGE));
+            LocalBroadcastManager.getInstance(getContext()).registerReceiver(myBRD, new IntentFilter(NotificationListener.WHATSAPP_MESSAGE));
         }
+
 
         String js = MSPV3.getMe().getString("MY_DB", "");
         myDB = new Gson().fromJson(js, MyDB.class);
+        Log.d("This is myDB",""+ myDB);
         if (myDB == null) {
             myDB = new MyDB();
         }
 
         this.arrayListMessages = myDB.getMessages();
+        ArrayList<String> keys = new ArrayList<>(arrayListMessages.keySet());
         contactRV = binding.listMessages;
         mAdapter = new SendersRycyclerViewAdapter(getContext());
+        mAdapter.updateSendersList(keys);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         contactRV.setLayoutManager(linearLayoutManager);
@@ -78,7 +80,7 @@ public class ContactsFragment extends Fragment {
             public void changeScreenItem(String sender) {
                 Bundle args = new Bundle();
                 args.putString(Constants.KEY_SENDER, sender);
-                LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(messagesViewModel.getReciver());
+                LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myBRD);
                 final NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_MessagesFragment, args);//moving to..
 
@@ -91,23 +93,36 @@ public class ContactsFragment extends Fragment {
 
     }
 
-    Observer<HashMap<String, ArrayList<Message>>> observer = new Observer<HashMap<String, ArrayList<Message>>>() {
-
-
-        @Override
-        public void onChanged(HashMap<String, ArrayList<Message>> stringArrayListHashMap) {
-            ArrayList<String> keys = new ArrayList<>(arrayListMessages.keySet());
-            mAdapter.updateSendersList(keys);
-        }
-    };
 
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(messagesViewModel.getReciver());
+        Log.d("Entered","enter2");
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myBRD);
 
     }
+
+
+
+    private BroadcastReceiver myBRD = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getActivity().runOnUiThread(() ->{
+                Log.d("Enter","Enter");
+                String sender = intent.getStringExtra(Constants.sender);
+                String message = intent.getStringExtra(Constants.KEY_message);
+                String time = intent.getStringExtra(Constants.KEY_time);
+                Message myMessage = new Message(sender, message, time);
+                if (arrayListMessages.get(sender) == null) {
+                    arrayListMessages.put(sender, new ArrayList<>());
+                }
+                arrayListMessages.get(sender).add(myMessage);
+                ArrayList<String> keys = new ArrayList<>(arrayListMessages.keySet());
+                mAdapter.updateSendersList(keys);
+            });
+        }
+    };
 }
 
