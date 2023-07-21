@@ -43,12 +43,6 @@ Please note that the app respects your privacy, and the captured messages are on
 4. Whenever a new message is received, the app will generate a notification, and the message content will be stored within the app.
 5. If the sender deletes a message, you can still access and read it within the app's user interface.
 
-## Support
-
-If you encounter any issues, have questions, or need assistance with the WhatsApp Message Notification App, please contact our support team at support@whatsappnotifapp.com.
-
-
-
 -----------------------------------
 
 Thank you for choosing the WhatsApp Message Notification App! I hope this app enhances your WhatsApp messaging experience and keeps you informed, even when messages get deleted. If you have any feedback or feature requests, don't hesitate to let us know. Happy messaging!
