@@ -49,23 +49,11 @@ Please note that the app respects your privacy, and the captured messages are on
 Here are some screenshots showcasing the user interface of the WhatsApp Message Notification App:
  *App Request Permission Screen* 
 <img src ="https://github.com/netanel97/WhatsApp_Notification/assets/101398032/6a74fe17-f1a5-4c9d-94c8-354c09bbc5f6" width = "200" height = "400">
+<img src ="https://github.com/netanel97/WhatsApp_Notification/assets/101398032/064d219b-5020-4b3d-adba-8b68234d68c0" width = "200" height = "400">
 
 
 -----------------------------------
 
 Thank you for choosing the WhatsApp Message Notification App! I hope this app enhances your WhatsApp messaging experience and keeps you informed, even when messages get deleted. If you have any feedback or feature requests, don't hesitate to let us know. Happy messaging!
 
-
-
-
-
-
-![Screenshot 1](screenshot_1.png)
-
-
-![Screenshot 2](screenshot_2.png)
-*Figure 2: Captured Messages History*
-
-![Screenshot 3](screenshot_3.png)
-*Figure 3: Real-time Notification Example*
 
