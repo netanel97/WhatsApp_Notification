@@ -1,6 +1,5 @@
-
-
-![WhatsApp Message Notification App](app_icon.png)
+[Whatsapp]:https://img.shields.io/badge/Whatsapp-3DDC84?style=for-the-badge&logo=Whatsapp&logoColor=white
+![Whatsapp]
 
 The WhatsApp Message Notification App is a handy tool designed to help users keep track of their WhatsApp messages, even if they are deleted by the sender. This README provides an overview of the app's features, installation instructions, and usage guidelines.
 
